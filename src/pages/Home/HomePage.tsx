@@ -1,10 +1,12 @@
+import { FeaturedBlogs } from "./components/FeaturedBlogs"
 import { Hero } from "./components/Hero"
 
 const HomePage = () => {
   return (
-    <>
-    <Hero/>
-    </>
+    <div className="space-y-5">
+      <Hero/>
+      <FeaturedBlogs/>
+    </div>
   )
 }
 

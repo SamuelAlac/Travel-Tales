@@ -1,6 +1,15 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
 @layer base {
+  #root{
+    @apply font-mono
+  }
+
+  body{
+    @apply bg-teal-50
+  }
+
   input::placeholder,
   textarea::placeholder {
     color: var(--color-gray-400);

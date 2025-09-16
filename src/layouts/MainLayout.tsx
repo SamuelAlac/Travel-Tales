@@ -4,7 +4,7 @@ import { Footer } from "../components/Footer"
 
 export const MainLayout = () => {
   return (
-    <div className="flex flex-col min-h-screen min-w-screen">
+    <div className="flex flex-col min-h-screen min-w-full">
         <Navbar/>
         <main className="flex-grow">
             <Outlet/>
