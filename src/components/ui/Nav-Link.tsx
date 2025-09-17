@@ -5,7 +5,8 @@ export const Nav = () => {
   return (
     <>
     {links.map((link, index) => (
-        <NavLink key={index} to={link.path} className={({ isActive }) => `nav-link text-2xl ${isActive ? 'nav-link-active' : ''}`}>{link.name}</NavLink>
+        <NavLink key={index} to={link.path} className={({ isActive }) => `nav-link text-2xl ${isActive ? 'nav-link-active' : ''}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>{link.name}</NavLink>
     ))}
     </>
   )
