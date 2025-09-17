@@ -8,13 +8,13 @@ export const Navbar = () => {
 
   return (
     <div className="flex flex-col p-3.5 lg:px-10 bg-green-100 fixed w-full z-1">
-      <div className="flex flex-col justify-between lg:flex-row space-y-5 md:space-y-0">
+      <div className="flex flex-col justify-between md:flex-row space-y-5 md:space-y-0">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl text-green-900">Travel Tales</h1>
-          <div className="text-black lg:hidden"><AiOutlineMenu role="button" onClick={setToggle} /></div>
+          <div className="text-black md:hidden"><AiOutlineMenu role="button" onClick={setToggle} /></div>
         </div>
 
-        <nav className={`flex flex-col ${!toggle && 'hidden'} md:flex md:flex-col items-center lg:flex-row gap-5`}>
+        <nav className={`flex flex-col ${!toggle && 'hidden'} md:flex items-center md:flex-row gap-5`}>
           <Nav/>
         </nav>
       </div>

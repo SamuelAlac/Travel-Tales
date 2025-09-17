@@ -12,7 +12,7 @@ export const links = [
         name: 'Blogs',
     },
     {
-        path: '/SmartPlan',
-        name: 'Smart Plan',
+        path: '/Login',
+        name: 'Login',
     },
 ]
