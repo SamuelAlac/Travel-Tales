@@ -1,10 +1,10 @@
-import { createUserWithEmailAndPassword, reload, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, reload, signInWithPopup, updateProfile } from "firebase/auth";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { FaFacebook } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../../../libs/firebase";
+import { auth, googleProvider } from "../../../../libs/firebase";
 import { useDispatch } from "react-redux";
 import { saveUser } from "../../../../state/auth/authSlice";
 
@@ -46,6 +46,16 @@ export const RegisterForm = () => {
     }
   }
 
+  const signInWithGoogle = async () =>{
+    try {
+      await signInWithPopup(auth, googleProvider)
+      alert('Signed in successfully with Google')
+      navigate('/Profile')
+    } catch (err) {
+      console.log(`Error signing in with google: ${err}`)
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="min-h-120 p-5 md:rounded-4xl flex flex-col justify-center bg-neutral-50/30">
         <legend className="text-green-700 text-4xl text-center mb-7">Create Account</legend>
@@ -79,7 +89,7 @@ export const RegisterForm = () => {
         <p className="text-black text-center my-3">Or Sign Up with</p>
         <div className="text-black flex justify-center gap-5 mb-2 md:mb-8">
             <FaFacebook size={35} role="button"/>
-            <FaGoogle size={35} role="button"/>
+            <FaGoogle size={35} role="button" onClick={signInWithGoogle}/>
             <FaGithub size={35} role="button"/>
         </div>
 

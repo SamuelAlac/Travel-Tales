@@ -1,10 +1,10 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { FaFacebook } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../../../libs/firebase";
+import { auth, googleProvider } from "../../../../libs/firebase";
 
 type FormFields = {
   email: string;
@@ -24,6 +24,16 @@ export const LoginForm = () => {
       setError('root',{
         message: 'Account not found'
       })
+    }
+  }
+
+  const signInWithGoogle = async () =>{
+    try {
+      await signInWithPopup(auth, googleProvider)
+      alert('Signed in successfully with Google')
+      navigate('/Profile')
+    } catch (err) {
+      console.log(`Error signing in with google: ${err}`)
     }
   }
 
@@ -49,7 +59,7 @@ export const LoginForm = () => {
         <p className="text-black text-center my-5">Or Sign In with</p>
         <div className="text-black flex justify-center gap-5 mb-2 md:mb-8">
             <FaFacebook size={35} role="button"/>
-            <FaGoogle size={35} role="button"/>
+            <FaGoogle size={35} role="button" onClick={signInWithGoogle}/>
             <FaGithub size={35} role="button"/>
         </div>
 
