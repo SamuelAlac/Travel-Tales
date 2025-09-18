@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, googleProvider } from "../../../../libs/firebase";
 import { useDispatch } from "react-redux";
 import { saveUser } from "../../../../state/auth/authSlice";
+import { createUser } from "../../../../database/users";
 
 type FormFields = {
   username: string;
@@ -29,6 +30,10 @@ export const RegisterForm = () => {
         photoURL: ''
       })
       await reload(userCredential.user);
+      await createUser({userData:{
+        Username: username,
+        Email: email,
+      }})
 
       dispatch(saveUser({
         uid: userCredential.user.uid,
@@ -38,7 +43,7 @@ export const RegisterForm = () => {
         refreshToken: userCredential.user.refreshToken,
       }))
 
-      navigate('/Login')
+      navigate('/Profile')
     } catch (err) {
       setError('root',{
         message: 'Account already exist'

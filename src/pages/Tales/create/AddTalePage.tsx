@@ -21,7 +21,7 @@ const AddTalePage = () => {
 
   return (
     <div className="min-h-screen pt-20 md:pt-15">
-        <div className="flex flex-col space-y-7">
+        <form className="flex flex-col space-y-7">
             <div className="text-center mt-5">
                 <h1 className="text-black text-2xl md:text-4xl">Start Adding your Tale</h1>
             </div>
@@ -60,7 +60,7 @@ const AddTalePage = () => {
             <div className="text-center">
                 <button className="btn btn-soft" onClick={addTopic}>Add Topic</button>
             </div>
-        </div>
+        </form>
     </div>
   )
 }
