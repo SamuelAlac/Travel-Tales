@@ -8,6 +8,8 @@ import AboutPage from './pages/About/AboutPage.tsx'
 import TalesPage from './pages/Tales/TalesPage.tsx'
 import LoginPage from './pages/Auth/Login/LoginPage.tsx'
 import RegisterPage from './pages/Auth/Register/RegisterPage.tsx'
+import AddTalePage from "./pages/Tales/create/AddTalePage.tsx";
+import TaleDetailPage from "./pages/Tales/view/TaleDetailPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +26,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/Tales',
-        element: <TalesPage/>
+        children: [
+          { index: true, element: <TalesPage/> },
+          { path: 'AddTale', element: <AddTalePage/> },
+          { path: ':taleID', element: <TaleDetailPage/> }
+        ]
       },
       {
         path: '/Login',
@@ -48,8 +54,8 @@ const router = createBrowserRouter([
 ])
 
 const App = () => {
-    useAuth();
-    return <RouterProvider router={router}/> 
+  useAuth();
+  return <RouterProvider router={router}/> 
 }
 
 export default App
