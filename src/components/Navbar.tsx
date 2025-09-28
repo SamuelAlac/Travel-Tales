@@ -28,10 +28,10 @@ export const Navbar = () => {
           <div className="text-black md:hidden"><AiOutlineMenu role="button" onClick={setToggle} /></div>
             <div className="md:hidden dropdown dropdown-end ">
               <FaUserCircle size={35} tabIndex={0} role="button" className="text-black"/>
-                <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-30 p-2 shadow-sm">
-                  <li><Link to='/Profile'>Profile</Link></li>
-                  <li><button onClick={handleSignOut}>Log out</button></li>
-                </ul>
+                <div tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-30 p-2 shadow-sm">
+                  <Link to='/Profile'>Profile</Link>
+                  <button onClick={handleSignOut}>Log out</button>
+                </div>
             </div>
         </div>
 

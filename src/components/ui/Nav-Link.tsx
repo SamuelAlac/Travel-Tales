@@ -25,7 +25,7 @@ export const Nav = () => {
     {links.map((link, index) => {
       if(link.name === 'Login'){
         return user 
-        ? (<p key={index} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        ? (<div key={index} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
           <div className="hidden md:block dropdown dropdown-center md:dropdown-end">
             <FaUserCircle size={35} tabIndex={0} role="button" className="text-black"/>
               <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-30 p-2 shadow-sm">
@@ -33,7 +33,7 @@ export const Nav = () => {
                 <li><button className="text-white" onClick={handleSignOut}>Log out</button></li>
               </ul>
           </div>
-          </p>)
+          </div>)
         : (<NavLink key={index} to={link.path} className={({ isActive }) => `nav-link text-2xl ${isActive ? 'nav-link-active' : ''}`}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>{link.name}</NavLink>)
       }

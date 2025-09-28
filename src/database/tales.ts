@@ -1,6 +1,6 @@
-import { addDoc, doc, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { getCollection } from "../libs/firebase"
-import type { CreateTaleMutation, TaleProp } from "../types/tales";
+import type { CreateTaleMutation, TaleProp, UpdateTaleMutation } from "../types/tales";
 
 export const getTales = async () =>{
     try {
@@ -9,6 +9,7 @@ export const getTales = async () =>{
         const response = snapShot.docs.map(doc => ({
             TaleID: doc.id,
             Author: doc.data().Author,
+            AuthorID: doc.data().AuthorID,
             Title: doc.data().Title,
             Description: doc.data().Description,
             Topic: doc.data().Topic,
@@ -29,10 +30,10 @@ export const getTaleByID = async ({ taleID }: TaleProp) =>{
         ? {
             TaleID: response.id,
             Author: response.data().Author,
+            AuthorID: response.data().AuthorID,
             Title: response.data().Title,
             Description: response.data().Description,
-            Topic: response.data().Topic,
-            Message: response.data().Message,
+            Story: response.data().Story,
         }
         : {};
 
@@ -46,16 +47,42 @@ export const createTale = async ({ taleData }: CreateTaleMutation) =>{
         const taleRef = getCollection('Tales');
         const newTale = await addDoc(taleRef, taleData);
         const response = await getDoc(newTale)
-        return response.exists()
-        ? {
-            TaleID: response.id,
-            Author: response.data().Author,
-            Title: response.data().Title,
-            Description: response.data().Description,
-            Topic: response.data().Topic,
-            Message: response.data().Message,
+        const data = response.data();
+        if(!data){
+            throw new Error('Failed to create new tale')
         }
-        : 'Failed to create new tale'
+        return {
+            TaleID: response.id,
+            Author: data.Author,
+            AuthorID: data.AuthorID,
+            Title: data.Title,
+            Description: data.Description,
+            Story: data.Story,
+        }
+    } catch (err) {
+        console.log(`Database error: ${err}`)
+    }
+}
+
+export const updateTale = async ({ taleID, taleData }: UpdateTaleMutation) =>{
+    try {
+        const talesRef = getCollection('Tales');
+        const taleDoc = doc(talesRef, taleID)
+        const tale = await getDoc(taleDoc)
+        if(!tale.exists()){
+            return { message: `Tale with the id of ${taleID} does not exist` }
+        }
+
+        await updateDoc(taleDoc, taleData)
+        return { taleID, ...taleData }
+    } catch (err) {
+        console.log(`Database error: ${err}`)
+    }
+}
+
+export const deleteTale = async () =>{
+    try {
+                
     } catch (err) {
         console.log(`Database error: ${err}`)
     }

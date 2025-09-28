@@ -10,6 +10,7 @@ import LoginPage from './pages/Auth/Login/LoginPage.tsx'
 import RegisterPage from './pages/Auth/Register/RegisterPage.tsx'
 import AddTalePage from "./pages/Tales/create/AddTalePage.tsx";
 import TaleDetailPage from "./pages/Tales/view/TaleDetailPage.tsx";
+import UpdateTalePage from "./pages/Tales/update/UpdateTalePage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +29,9 @@ const router = createBrowserRouter([
         path: '/Tales',
         children: [
           { index: true, element: <TalesPage/> },
-          { path: 'AddTale', element: <AddTalePage/> },
-          { path: ':taleID', element: <TaleDetailPage/> }
+          { path: 'AddTale', element: <ProtectedRoute><AddTalePage/></ProtectedRoute> },
+          { path: ':taleID', element: <TaleDetailPage/> },
+          { path: ':taleID/UpdateTale', element: <ProtectedRoute><UpdateTalePage/></ProtectedRoute> },
         ]
       },
       {
@@ -41,13 +43,8 @@ const router = createBrowserRouter([
         element: <RegisterPage/>
       },
       {
-        element: <ProtectedRoute/>,
-        children: [
-          {
-            path: '/Profile',
-            element: <ProfilePage/>
-          }
-        ]
+        path: '/Profile',
+        element: <ProtectedRoute><ProfilePage/></ProtectedRoute>
       }
     ]
   }

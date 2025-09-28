@@ -1,8 +1,11 @@
 import { useTaleMutation } from "../../../hooks/useTaleMutation";
 import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
-import type { Story } from "../../../types/tales";
+import type { Story, TaleProp } from "../../../types/tales";
 import { auth } from "../../../libs/firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useTaleIDMutation } from "../../../hooks/useTaleIDMutation";
+import { useTaleIDQuery } from "../../../hooks/useTaleIDQuery";
+import { useEffect } from "react";
 
 type FormFields = {
     title: string;
@@ -10,14 +13,27 @@ type FormFields = {
     story: Story[]
 }
 
-const AddTalePage = () => {
+const UpdateTalePage = () => {
+    const { taleID } = useParams<TaleProp>();
+    if(!taleID) throw new Error("taleID is missing");
+    const { data: tale, isError, isLoading  } = useTaleIDQuery({taleID})
+    const stories = tale?.Story
 
-    const { mutateAsync } = useTaleMutation()
+    const { mutateAsync } = useTaleIDMutation()
     const navigate = useNavigate();
-    const {control, register, handleSubmit, setError } = useForm<FormFields>({
-        defaultValues: { story: [] },
-    })
-    const { fields, append, remove } = useFieldArray({
+    const {control, register, handleSubmit, setError, reset } = useForm<FormFields>()
+
+    useEffect(() =>{
+        if(tale){
+            reset({
+                title: tale.Title,
+                description: tale.Description,
+                story: tale.Story,
+            })
+        }
+    },[tale])
+
+    const { fields, append, insert, remove } = useFieldArray({
         control,
         name: 'story'
     })
@@ -32,18 +48,16 @@ const AddTalePage = () => {
     const onSubmit: SubmitHandler<FormFields> = async (formData) =>{
     try {
         const {title, description, story } = formData
-        const author = auth.currentUser?.displayName;
-        const authorID = auth.currentUser?.uid;
+        const user = auth.currentUser?.displayName
         await mutateAsync({
+            taleID: taleID,
             taleData: {
                 Title: title,
-                Author: author,
-                AuthorID: authorID,
                 Description: description,
                 Story: story,
             }
         })
-        alert('Tale created successfully!');
+        alert('Tale updated successfully!');
         navigate('/Tales')
     } catch (err) {
         setError('root',{
@@ -56,7 +70,7 @@ const AddTalePage = () => {
         <div className="min-h-screen pt-20 md:pt-15">
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-7">
                 <div className="text-center mt-5">
-                    <h1 className="text-black text-2xl md:text-4xl">Start Adding your Tale</h1>
+                    <h1 className="text-black text-2xl md:text-4xl">Start Updating your Tale</h1>
                 </div>
 
                 <div className="mt-5 text-center">
@@ -91,4 +105,4 @@ const AddTalePage = () => {
     )
 }
 
-export default AddTalePage
+export default UpdateTalePage

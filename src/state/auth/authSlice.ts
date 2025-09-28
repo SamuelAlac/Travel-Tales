@@ -11,10 +11,12 @@ type User = {
 
 interface AuthState {
     value?: User;
+    loading: boolean;
 }
 
 const initialState: AuthState = {
     value: undefined,
+    loading: true,
 };
 
 export const authSlice = createSlice({
@@ -23,9 +25,13 @@ export const authSlice = createSlice({
     reducers: {
         saveUser: (state, action: PayloadAction< User | undefined>) =>{
             state.value = action.payload;
+            state.loading = false;
+        },
+        startLoading:(state) =>{
+            state.loading = true;
         }
     }
 })
 
-export const { saveUser } = authSlice.actions
+export const { saveUser, startLoading } = authSlice.actions
 export default authSlice.reducer;

@@ -2,10 +2,14 @@ import { Navigate, Outlet } from "react-router";
 import { useSelector } from "react-redux";
 import type { RootState } from '../state/store';
 
-const ProtectedRoute = () => {
-  const user = useSelector((state: RootState) => state.auth.value);
-  console.log("user", user);
-  return user ? <Outlet/> : <Navigate to='/Login' replace/>
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { value: user, loading } = useSelector((state: RootState) => state.auth);
+
+  if (loading) return <div className="">Loading...</div>;
+
+  if(!user) return <Navigate to='/Login' replace/>
+
+  return <>{children}</>
 };
 
 export default ProtectedRoute;

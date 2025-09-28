@@ -2,14 +2,16 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../state/store";
-import { saveUser } from "../state/auth/authSlice";
+import { saveUser, startLoading } from "../state/auth/authSlice";
 import { auth } from "../libs/firebase";
 
 export const useAuth = () =>{
-    const user = useSelector((state: RootState) => state.auth.value)
+    const { value: user, loading } = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch<AppDispatch>();
     console.log(`user from state: ${user}`)
+
     useEffect(() =>{
+        dispatch(startLoading());
         const unsubscribe = onAuthStateChanged(auth, (user) =>{
             if(user){
                 dispatch(saveUser({
@@ -25,4 +27,6 @@ export const useAuth = () =>{
         })
         return () => unsubscribe();
     },[dispatch])
+
+    return { user, loading };
 }

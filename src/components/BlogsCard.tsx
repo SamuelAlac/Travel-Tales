@@ -2,10 +2,14 @@ import { FaHeart } from "react-icons/fa";
 import { IoChatbox } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { auth } from "../libs/firebase";
+import { FaRegEdit } from "react-icons/fa";
 
 export const BlogsCard = ({tale}: { tale: any }) => {
+  const userID = auth.currentUser?.uid;
+  console.log(userID)
   return (
-    <div className="card bg-green-700 max-w-75 min-h-110 transition ease-in-out hover:scale-105">
+    <div className="card bg-green-700 w-full min-h-110 transition ease-in-out hover:scale-105 relative group">
         <figure className="max-h-45">
             <img
             src="/Baguio.webp"
@@ -31,9 +35,14 @@ export const BlogsCard = ({tale}: { tale: any }) => {
               </div>
             </div>
 
-            <Link to={`${tale?.TaleID}`} className="btn btn-soft">Read Me</Link>
+              <div>
+              <Link to={`${tale?.TaleID}`} className="btn btn-soft">Read Me</Link>
+              </div>
             </div>
         </div>
+        {tale?.AuthorID === userID && (
+          <Link to={`${tale?.TaleID}/UpdateTale`} className="btn btn-soft absolute right-3 top-3 opacity-80 md:opacity-0 group-hover:opacity-80"><FaRegEdit/></Link>
+        )}
     </div>
   )
 }

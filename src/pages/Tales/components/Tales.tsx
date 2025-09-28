@@ -6,7 +6,7 @@ import { useTalesQuery } from "../../../hooks/useTalesQuery";
 
 export const Tales = () => {
 
-    const { data: tales, isError, isLoading } = useTalesQuery();
+  const { data: tales, isError, isLoading } = useTalesQuery();
 
   return (
     <div className="flex flex-col items-center min-h-screen space-y-8 mb-5">
@@ -18,7 +18,7 @@ export const Tales = () => {
             <Searchbar/>
           </div>
 
-          <div className="grid grid-col-1 md:grid-cols-4 gap-10">
+          <div className="grid grid-col-1 md:grid-cols-4 gap-8 px-5">
             {tales?.map((tale, index) =>(
               <BlogsCard key={index} tale={tale}/>
             ))}
