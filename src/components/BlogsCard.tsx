@@ -4,10 +4,21 @@ import { FaRegEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { auth } from "../libs/firebase";
 import { FaRegEdit } from "react-icons/fa";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { useDeleteTaleMutation } from "../hooks/useDeleteTaleMutation";
 
 export const BlogsCard = ({tale}: { tale: any }) => {
   const userID = auth.currentUser?.uid;
-  console.log(userID)
+  const { mutateAsync } = useDeleteTaleMutation()
+
+  const deleteTale = async (taleID: string) =>{
+    try {
+      await mutateAsync({ taleID: taleID })
+    } catch (err) {
+      console.log(`Error deleting tale: ${err}`)
+    }
+  }
+
   return (
     <div className="card bg-green-700 w-full min-h-110 transition ease-in-out hover:scale-105 relative group">
         <figure className="max-h-45">
@@ -41,7 +52,10 @@ export const BlogsCard = ({tale}: { tale: any }) => {
             </div>
         </div>
         {tale?.AuthorID === userID && (
-          <Link to={`${tale?.TaleID}/UpdateTale`} className="btn btn-soft absolute right-3 top-3 opacity-80 md:opacity-0 group-hover:opacity-80"><FaRegEdit/></Link>
+          <>
+          <Link to={`${tale?.TaleID}/UpdateTale`} className="btn btn-soft btn-sm absolute right-3 top-3 opacity-80 md:opacity-0 group-hover:opacity-80"><FaRegEdit/></Link>
+          <button onClick={() => (deleteTale(tale?.TaleID))} className="btn btn-soft btn-sm absolute right-3 top-12 opacity-80 md:opacity-0 group-hover:opacity-80"><FaRegTrashCan/></button>  
+          </>
         )}
     </div>
   )

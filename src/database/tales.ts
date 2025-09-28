@@ -1,4 +1,4 @@
-import { addDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { getCollection } from "../libs/firebase"
 import type { CreateTaleMutation, TaleProp, UpdateTaleMutation } from "../types/tales";
 
@@ -80,9 +80,17 @@ export const updateTale = async ({ taleID, taleData }: UpdateTaleMutation) =>{
     }
 }
 
-export const deleteTale = async () =>{
+export const deleteTale = async ({ taleID }: TaleProp) =>{
     try {
-                
+        const talesRef = getCollection('Tales');
+        const taleDoc = doc(talesRef, taleID)
+        const tale = await getDoc(taleDoc)
+        if(!tale.exists()){
+            return { message: `Tale with the id of ${taleID} does not exist` }
+        }
+
+        await deleteDoc(taleDoc)
+        return { message: 'tale deleted successfully', taleID }
     } catch (err) {
         console.log(`Database error: ${err}`)
     }
